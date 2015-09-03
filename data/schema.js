@@ -121,6 +121,32 @@ var queryType = new GraphQLObjectType({
   }),
 });
 
+var createWidgetMutation = mutationWithClientMutationId({
+  name: 'CreateWidget',
+  inputFields: {
+    name: {
+        type: new GraphQLNonNull(GraphQLString)
+    },
+  },
+  outputFields: {
+    widget: {
+      type: widgetType,
+      resolve: (payload) => {
+        console.log('resolve', payload);
+        return payload;
+      },
+    },
+    widgetId: {
+      type: GraphQLString
+    },
+  },
+  mutateAndGetPayload: (payload) => {
+    console.log('createWidget', payload);
+    var result = {widget: {name: 'test widget'}, widgetId: 1};
+    return Promise.resolve(result);
+  }
+});
+
 /**
  * This is the type that will be the root of our mutations,
  * and the entry point into performing writes in our schema.
@@ -128,7 +154,7 @@ var queryType = new GraphQLObjectType({
 var mutationType = new GraphQLObjectType({
   name: 'Mutation',
   fields: () => ({
-    // Add your own mutations here
+    createWidget: createWidgetMutation
   })
 });
 
@@ -139,5 +165,5 @@ var mutationType = new GraphQLObjectType({
 export var Schema = new GraphQLSchema({
   query: queryType,
   // Uncomment the following after adding some mutation fields:
-  // mutation: mutationType
+  mutation: mutationType
 });

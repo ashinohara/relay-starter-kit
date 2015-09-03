@@ -1,6 +1,13 @@
 import 'babel/polyfill';
+var CreateWidgetMutation = require('../mutations/CreateWidgetMutation');
 
 class App extends React.Component {
+
+  constructor() {
+    super();
+    this._createWidget = this._createWidget.bind(this);
+  }
+
   render() {
     return (
       <div>
@@ -10,8 +17,13 @@ class App extends React.Component {
             <li>{edge.node.name} (ID: {edge.node.id})</li>
           )}
         </ul>
+        <button onClick={this._createWidget}>Create!</button>
       </div>
     );
+  }
+
+  _createWidget() {
+      Relay.Store.update(new CreateWidgetMutation({name: 'test widget', widget: null}));
   }
 }
 
@@ -23,7 +35,7 @@ export default Relay.createContainer(App, {
           edges {
             node {
               id,
-              name,
+              name
             },
           },
         },
