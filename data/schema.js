@@ -130,11 +130,7 @@ var createWidgetMutation = mutationWithClientMutationId({
   },
   outputFields: {
     widget: {
-      type: widgetType,
-      resolve: (payload) => {
-        console.log('resolve', payload);
-        return payload;
-      },
+      type: widgetType
     },
     widgetId: {
       type: GraphQLString

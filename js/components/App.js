@@ -23,7 +23,12 @@ class App extends React.Component {
   }
 
   _createWidget() {
-      Relay.Store.update(new CreateWidgetMutation({name: 'test widget', widget: null}));
+      Relay.Store.update(new CreateWidgetMutation({name: 'test widget', widget: this.props.widget}), {
+          onSuccess: () => {
+            // after the mutation completes the `sid` will be populated
+            console.log(this.props.widget);
+          }
+        });
   }
 }
 
@@ -41,5 +46,10 @@ export default Relay.createContainer(App, {
         },
       }
     `,
+    widget: () => Relay.QL`
+      fragment on Widget {
+          ${CreateWidgetMutation.getFragment('name')}
+      }
+    `
   },
 });

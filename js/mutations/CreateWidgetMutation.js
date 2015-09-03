@@ -28,11 +28,15 @@ export default class CreateWidgetMutation extends Relay.Mutation {
     }
     getConfigs() {
         return [{
-            type: 'FIELDS_CHANGE',
-            fieldIDs: {
-                widget: null,
-                widgetId: null
-            },
+            type: 'REQUIRED_CHILDREN',
+            children: [Relay.QL`
+            fragment on CreateWidgetPayload {
+                widget {
+                    name
+                },
+                widgetId
+            }
+            `]
         }];
     }
 }
